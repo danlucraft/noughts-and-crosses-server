@@ -6,11 +6,11 @@ object NoughtsAndCrosses {
 	val symbolMap = Map(0 -> ".", 1 -> "o", 2 -> "x")
 	
 	def prettyRow(row:Array[Int]) = {
-		row.map((x:Int) => symbolMap(x))
+		row.map((x:Int) => symbolMap(x)).mkString(" ")
 	}
 	
 	def pretty = {
-		board.map(prettyRow(_).toString)
+		board.map(prettyRow(_)).mkString("\n")
 	}
 	
 	def main(args: Array[String]) {
