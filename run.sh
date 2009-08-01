@@ -1,2 +1,2 @@
-scalac main.scala
+scalac lib/main.scala
 scala NoughtsAndCrosses
