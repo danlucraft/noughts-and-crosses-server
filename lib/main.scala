@@ -1,10 +1,6 @@
 
 class Board(val size: Int) {
 	val board = Array.make(size, 0).map(_ => Array.make(size, 0))
-}
-
-object NoughtsAndCrosses {
-	val board = new Board(3)
 	val symbolMap = Map(0 -> ".", 1 -> "o", 2 -> "x")
 	
 	def prettyRow(row:Array[Int]) = {
@@ -12,11 +8,14 @@ object NoughtsAndCrosses {
 	}
 	
 	def pretty = {
-		board.board.map(prettyRow(_)).mkString("\n")
+		board.map(prettyRow(_)).mkString("\n")
 	}
-	
+}
+
+object NoughtsAndCrosses {
 	def main(args: Array[String]) {
-		println(pretty.toString)
+		val board = new Board(args.first.toInt)
+		println(board.pretty.toString)
 	}
 }
 
