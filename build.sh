@@ -1,1 +1,1 @@
-scalac -d bin lib/main.scala
+scalac -d bin lib/*.scala lib/players/*.scala
