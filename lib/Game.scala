@@ -1,6 +1,7 @@
 
 class Game(val a:Player, val b:Player) {
 	val board = new Board(3)
+	var loserByDefault:Option[Player] = None
 	
 	def treequel(x:Any, y:Any, z:Any) = (x == y) && (y == z)
 	
@@ -19,7 +20,19 @@ class Game(val a:Player, val b:Player) {
 	
 	def toMove() = if(moveCount(a) > moveCount(b)) b else a
 	
-	def winner(): Option[Player] = {
+	def winnerByDefault(): Option[Player] = {
+	    if (loserByDefault != None) {
+	        if (loserByDefault.get == a)
+	            Some(b);
+	        else
+	            Some(a);
+	    }
+	    else {
+	        None
+        }
+    }
+    
+    def winnerByPlay(): Option[Player]= {
 		for(i <- 0 to 2)
 		  if(treequel(board(0, i), board(1, i), board(2, i)) && board(0, i) != 0)
 		    return intToPlayer(board(0, i))
@@ -36,21 +49,39 @@ class Game(val a:Player, val b:Player) {
 		None
 	}
 	
-	def play() = winner() match {
-		case Some(p) => println("Winner: ", p)
-		case None    => move()
+	def play(): Player = {
+	    winnerByDefault() match {
+    		case Some(p) => { println("Winner by default: " + p); return p }
+    		case None    => None
+    	}
+	    winnerByPlay() match {
+    		case Some(p) => { println("Winner: " + p); return p }
+    		case None    => return move()
+    	}
 	}
-	
-	def move() { 
+    	
+	def move(): Player = { 
 		val toMovePlayer = toMove()
 		val move = toMovePlayer.move(board, playerInt(toMovePlayer))
 		println(toMovePlayer)
 		println(move)
-		move match {
-			case Some((x, y)) => board(x, y) = Some(playerInt(toMovePlayer))
-			case None         => println(".")
+		if (move == None) {
+		    loserByDefault = Some(toMovePlayer)
 		}
+		else {
+		    val (x, y) = move.get
+		    if (x > board.size - 1 || x < 0 || y > board.size - 1 || y < 0) {
+		        loserByDefault = Some(toMovePlayer)
+		    }
+		    if (board(x, y) != None)
+		        loserByDefault = Some(toMovePlayer)
+		    else
+		        board(x, y) = Some(playerInt(toMovePlayer))
+		}
+		
 		println(board.pretty.toString)
-		play()
+		return play()
 	}
 }
+
+

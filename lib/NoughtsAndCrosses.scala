@@ -5,15 +5,11 @@ object NoughtsAndCrosses {
 		case None    => println("No valid move")
 	}
 	
-	def main(args: Array[String]) {/*
-				println("Current board: ")
-				val board = Board.fromString(args(1))
-				println(board.pretty.toString)
-				args(0) match {
-					case "EagerPlayer" => printMove(EagerPlayer.move(board, 1))
-					case "RandomPlayer" => printMove(RandomPlayer.move(board, 1))
-				}*/
-		new Tournament(Array(EagerPlayer, RandomPlayer)).run()
+	def main(args: Array[String]) {
+		new Tournament(Array(
+		    new ExternalPlayer("Random", "/Users/danlucraft/projects/noughts-and-crosses/bin", "scala RandomPlayer"), 
+    		new ExternalPlayer("Stupid", "/Users/danlucraft/projects/noughts-and-crosses/bin", "scala StupidPlayer"))
+    	    ).run()
 	}
 }
 
