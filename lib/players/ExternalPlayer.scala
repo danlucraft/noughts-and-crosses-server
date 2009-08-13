@@ -3,9 +3,9 @@ class ExternalPlayer(val name:String, val dir:String, val exec:String) extends P
     val ResponseFormatRE = """\((\d),(\d)\)""".r
     
     def move(board:Board, player:Int): Option[(Int, Int)] = {
-//        print("# Calling " + name)
+       print("    (called ")
         val response = getOutput(board, player)
-//        println(response)
+        println(", response: \"" + response  +"\"")
         response match {
             case ResponseFormatRE(x, y) => return Some((x.toInt, y.toInt))
             case nonMatch               => return None
@@ -16,7 +16,7 @@ class ExternalPlayer(val name:String, val dir:String, val exec:String) extends P
     def getOutput(board:Board, player:Int): String = {
         val process = new SubProcess
         val shell = exec + " " + board.line() + " " + board.symbolMap(Some(player))
-//        println("    \"" + shell + "\"")
+        print(" \"" + shell + "\"")
         process.run(shell, new java.io.File(dir), (s:String) => return s)
         return ""
     }
